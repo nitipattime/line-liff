@@ -51,6 +51,45 @@ app.post('/send-message', async (req, res) => {
   }
 })
 
+app.post('/webhook',async (req, res) => {
+  const { events } = req.body
+
+  if (!events || events.length <= 0) {
+    console.log('error event not found')
+    res.json({
+      message: 'event not found !'
+    })
+    return false
+  }
+  console.log('event',events)
+  try {
+    const lineEvent = events[0]
+    const lineUserID = lineEvent.source.userId
+    let commandMessage = 'UserID : ' + lineUserID
+    const response = await sendMessage(lineUserID, commandMessage)
+    res.json({
+      message: 'Send Message Success',
+      responseData: response.data
+    })
+
+    // if (lineEvent.type === 'message') {
+    //   if (lineEvent.message.text === 'อยากกลับบ้าน') {
+    //     commandMessage = 'back'
+    //   }
+    // }
+
+    // // update richmenu ด้วย userId
+    // if (commandMessage === 'back') {
+    //   const richmenuResponse = await defaultRichmenu()
+    //   const response = await updateRichmenu(lineUserID, richmenuResponse.data.richMenuId)
+    //   console.log('=== LINE log', response.data)
+    // }
+  } catch (error) {
+    console.log('error', error)
+  }
+
+})
+
 app.listen(port, async () => {
   console.log(`Express app listening at http://localhost:${port}`)
 })
@@ -67,78 +106,78 @@ app.listen(port, async () => {
 //     }
 //   }
   
-  app.post('/webhook', async (req, res) => {
-    const { events } = req.body
+//   app.post('/webhook', async (req, res) => {
+//     const { events } = req.body
   
-    if (!events || events.length <= 0) {
-      console.log('error event not found')
-      res.json({
-        message: 'event not found !'
-      })
-      return false
-    }
+//     if (!events || events.length <= 0) {
+//       console.log('error event not found')
+//       res.json({
+//         message: 'event not found !'
+//       })
+//       return false
+//     }
   
-    try {
-      const lineEvent = events[0]
-      const lineUserID = lineEvent.source.userId
-      let commandMessage = ''
+//     try {
+//       const lineEvent = events[0]
+//       const lineUserID = lineEvent.source.userId
+//       let commandMessage = ''
   
-      if (lineEvent.type === 'message') {
-        if (lineEvent.message.text === 'อยากกลับบ้าน') {
-          commandMessage = 'back'
-        }
-      }
+//       if (lineEvent.type === 'message') {
+//         if (lineEvent.message.text === 'อยากกลับบ้าน') {
+//           commandMessage = 'back'
+//         }
+//       }
   
-      // update richmenu ด้วย userId
-      if (commandMessage === 'back') {
-        const richmenuResponse = await defaultRichmenu()
-        const response = await updateRichmenu(lineUserID, richmenuResponse.data.richMenuId)
-        console.log('=== LINE log', response.data)
-      }
-    } catch (error) {
-      console.log('error', error)
-    }
-  })
+//       // update richmenu ด้วย userId
+//       if (commandMessage === 'back') {
+//         const richmenuResponse = await defaultRichmenu()
+//         const response = await updateRichmenu(lineUserID, richmenuResponse.data.richMenuId)
+//         console.log('=== LINE log', response.data)
+//       }
+//     } catch (error) {
+//       console.log('error', error)
+//     }
+//   })
 
-// send Flex Message
-const sendFlexMessage = async (userUid, message) => {
-    try {
-      let contents = Object.assign({}, templateJSON)
-      contents.body.contents[0].text = message
+// // send Flex Message
+// const sendFlexMessage = async (userUid, message) => {
+//     try {
+//       let contents = Object.assign({}, templateJSON)
+//       contents.body.contents[0].text = message
   
-      const body = {
-        to: userUid,
-        messages: [
-          {
-            type: "flex",
-            altText: "this is a flex message",
-            contents
-          }
-        ]
-      }
-      console.log('body', JSON.stringify(body))
-      const response = await axios.post(LINE_API_URL, body, { headers })
-      return response
-    } catch (error) {
-      // console.log(error.response)
-      throw new Error(error.message)
-    }
-  }
+//       const body = {
+//         to: userUid,
+//         messages: [
+//           {
+//             type: "flex",
+//             altText: "this is a flex message",
+//             contents
+//           }
+//         ]
+//       }
+//       console.log('body', JSON.stringify(body))
+//       const response = await axios.post(LINE_API_URL, body, { headers })
+//       return response
+//     } catch (error) {
+//       // console.log(error.response)
+//       throw new Error(error.message)
+//     }
+//   }
   
-  app.post('/send-message', async (req, res) => {
-    const { userUid, message } = req.body
+//   app.post('/send-message', async (req, res) => {
+//     const { userUid, message } = req.body
   
-    try {
-      // เปลี่ยนมายิงผ่าน flex message แทน
-      const response = await sendFlexMessage(userUid, message)
-      console.log('=== LINE log', response.data)
-      res.json({
-        message: 'Message OK'
-      })
-    } catch (error) {
-      console.log('error', error.response.data)
-      res.status(400).json({
-        error: error.response
-      })
-    }
-  })
+//     try {
+//       // เปลี่ยนมายิงผ่าน flex message แทน
+//       const response = await sendFlexMessage(userUid, message)
+//       console.log('=== LINE log', response.data)
+//       res.json({
+//         message: 'Message OK'
+//       })
+//     } catch (error) {
+//       console.log('error', error.response.data)
+//       res.status(400).json({
+//         error: error.response
+//       })
+//     }
+//   })
