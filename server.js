@@ -2,15 +2,16 @@ const express = require('express')
 const axios = require('axios')
 const cors = require('cors')
 
+const app = express()
+app.use(express.json())
+
 require('dotenv').config()
 
-const app = express()
 app.use(cors())
 const port = 8888
 
-const LINE_API_URL = 'https://api.line.me/v2/bot/message/push'
 
-app.use(express.json())
+const LINE_API_URL = 'https://api.line.me/v2/bot/message/push'
 const LINE_ACCESS_TOKEN = process.env.LINE_ACCESS_TOKEN
 
 const headers = {
@@ -20,11 +21,11 @@ const headers = {
 
 const sendMessage = async (userUid, message) => {
   const body = {
-    'to': userUid,
-    'messages': [
+    to: userUid,
+    messages: [
       {
-        'type': 'text',
-        'text': message
+        type: 'text',
+        text: message
       }
     ]
   }
@@ -34,7 +35,8 @@ const sendMessage = async (userUid, message) => {
 
 app.post('/send-message', async (req, res) => {
   const { userUid, message } = req.body
-
+  console.log(userUid)
+  console.log(message)
   try {
     const response = await sendMessage(userUid, message)
     console.log('=== LINE log', response.data)
@@ -53,17 +55,17 @@ app.listen(port, async () => {
   console.log(`Express app listening at http://localhost:${port}`)
 })
 
-const defaultRichmenu = async () => {
-    try {
-      const response = await axios.get(
-        `${LINT_BOT_API_URL}/all/richmenu`,
-        { headers }
-      )
-      return response
-    } catch (error) {
+// const defaultRichmenu = async () => {
+//     try {
+//       const response = await axios.get(
+//         `${LINT_BOT_API_URL}/all/richmenu`,
+//         { headers }
+//       )
+//       return response
+//     } catch (error) {
   
-    }
-  }
+//     }
+//   }
   
   app.post('/webhook', async (req, res) => {
     const { events } = req.body
