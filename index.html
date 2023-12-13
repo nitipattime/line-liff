@@ -10,24 +10,39 @@
       background: #ddd;
     }
   </style>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            clifford: '#da373d',
+          }
+        }
+      }
+    }
+  </script>
 </head>
 <!-- เหมือนเดิม -->
-<body>
-  <div id="lineprofile" style="display: none;">
-    <img width="100px" id="profileImage" src="">
-    <div>
-      Hello <b><span id="profileName">Name</span></b>
+<body class="bg-slate-800"> 
+  <div class="text-center" id="lineprofile" style="display: none;">
+    <div class="flex justify-center items-center pt-12"> 
+    <img class="content-center border-4 border-white" width="150px" id="profileImage" src="">
+  </div>
+    <br>
+    <div class="text-3xl font-bold text-white">
+      Hello : <b><span id="profileName" class="text-amber-500">Name</span></b>
     </div>
-    <div>
-      UID <span id="profileUID">UID</span>
+    <div class="text-3xl font-bold text-white">
+      UID : <span id="profileUID" class="text-amber-500">UID</span>
     </div>
 
-    <div class="message">
-      <div>Send message</div>
-      <input id="message">
-      <button onclick="sendMessage()">Send</button>
+    <br>
+    <div class="bg-stone-600 p-4">
+      <div class="text-3xl font-bold text-white">Send message : <input class="rounded" id="message"> <button class="font-bold w-24 bg-cover rounded bg-amber-500 font-bold text-black" onclick="sendMessage()">Send</button></div>
     </div>
-    <button onclick="logOut()">Logout</button>
+    <br>
+    <button class="w-36 bg-cover rounded bg-red-600 text-3xl font-bold p-2" onclick="logOut()">Logout</button>
   </div>
   <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.1/axios.min.js" integrity="sha512-m9S8W3a9hhBHPFAbEIaG7J9P92dzcAWwM42VvJp5n1/M599ldK6Z2st2SfJGsX0QR4LfCVr681vyU5vW8d218w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
