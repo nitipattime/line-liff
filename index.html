@@ -44,13 +44,18 @@
       <button class="text-lg font-bold w-28 bg-cover rounded bg-amber-500 font-bold text-black p-2" onclick="sendMessage()">Send</button>
     </div>
     <br>
-    <button class="w-36 bg-cover rounded bg-red-600 text-3xl font-bold p-2" onclick="logOut()">Logout</button>
+    <button id="btnLogOut" class="w-36 bg-cover rounded bg-red-600 text-3xl font-bold p-2" onclick="logOut()">Logout</button>
   </div>
   <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.1/axios.min.js" integrity="sha512-m9S8W3a9hhBHPFAbEIaG7J9P92dzcAWwM42VvJp5n1/M599ldK6Z2st2SfJGsX0QR4LfCVr681vyU5vW8d218w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <script>
     let userId = ''
+    const btnLogOut = document.getElementById('btnLogOut');
 
+    if (liff.isInClient()) {
+      btnLogOut.style.display = 'none';
+    }    
+    
     const logOut = () => {
       liff.logout()
       window.location.reload()
