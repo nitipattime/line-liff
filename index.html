@@ -36,6 +36,9 @@
     <div class="text-base font-bold text-white">
       UID : <span id="profileUID" class="text-amber-500">UID</span>
     </div>
+    <div class="text-base font-bold text-white">
+      Email : <span id="email" class="text-amber-500">Email</span>
+    </div>
 
     <br>
     <div class="bg-stone-600 p-4">
@@ -69,6 +72,7 @@
         profileImage.src = profile.pictureUrl
         profileName.innerText = profile.displayName
         profileUID.innerText = profile.userId
+        email.innerText = liff.getDecodedIDToken().email
 
         // collect userId
         userId = profile.userId
